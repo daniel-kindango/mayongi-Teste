@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <title>Quantas Senhas Possíveis?</title>
+    <title>Validação de Senha</title>
     <style>
         body {
             font-family: 'Roboto', sans-serif;
@@ -38,6 +38,17 @@
             text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.7);
         }
 
+        input {
+            padding: 12px;
+            margin-bottom: 15px;
+            width: 100%;
+            font-size: 16px;
+            border-radius: 8px;
+            border: none;
+            outline: none;
+            text-align: center;
+        }
+
         button {
             padding: 15px 30px;
             font-size: 16px;
@@ -55,11 +66,18 @@
             transform: scale(1.05);
         }
 
-        #resultado {
+        #resultado, #quantidadeSenhas {
             margin-top: 20px;
-            font-size: 20px;
+            font-size: 18px;
             font-weight: bold;
+        }
+
+        #resultado {
             color: #00c6ff;
+        }
+
+        #quantidadeSenhas {
+            color: #ffa500;
         }
     </style>
 </head>
@@ -67,38 +85,63 @@
 <body>
 
 <div class="container">
-    <h1>Quantas Senhas Possíveis?</h1>
-    <p>A senha do cofre é um número de 4 dígitos. A dica é:</p>
-    <ul>
-        <li>Todos os dígitos são diferentes.</li>
-        <li>A soma deles é 10.</li>
-        <li>O número termina com zero (0).</li>
-    </ul>
+    <h1>Validação de Senha</h1>
+    <p>Digite um número de 4 dígitos:</p>
 
-    <button onclick="calcularSenhas()">Calcular Senhas Possíveis</button>
+    <input type="text" id="senha" maxlength="4" placeholder="Ex: 5203">
+
+    <button onclick="validarSenha()">Validar Senha</button>
+
     <p id="resultado"></p>
+    <p id="quantidadeSenhas"></p>
 </div>
 
 <script>
-    function calcularSenhas() {
-        let quantidade = 0;
+    function validarSenha() {
+        const senha = document.getElementById('senha').value;
+        const resultado = document.getElementById('resultado');
+        const quantidadeSenhas = document.getElementById('quantidadeSenhas');
 
-        // O último dígito é 0, então só precisamos escolher os três primeiros dígitos
-        for (let d1 = 1; d1 <= 9; d1++) {
-            for (let d2 = 1; d2 <= 9; d2++) {
-                for (let d3 = 1; d3 <= 9; d3++) {
-                    // Todos os dígitos precisam ser diferentes entre si e de 0
-                    if (d1 !== d2 && d1 !== d3 && d2 !== d3) {
-                        // Soma dos três primeiros dígitos + 0 (último dígito)
-                        if (d1 + d2 + d3 === 10) {
-                            quantidade++;
+        if (senha.length !== 4 || isNaN(senha)) {
+            resultado.textContent = "Por favor, insira exatamente 4 números.";
+            resultado.style.color = "#ff4d4d"; // vermelho
+            quantidadeSenhas.textContent = "";
+            return;
+        }
+
+        const digitos = senha.split('').map(Number);
+
+        const todosDiferentes = new Set(digitos).size === 4;
+        const soma = digitos.reduce((a, b) => a + b, 0);
+        const terminaComZero = digitos[3] === 0;
+
+        if (todosDiferentes && soma === 10 && terminaComZero) {
+            resultado.textContent = "Senha válida!";
+            resultado.style.color = "#00c6ff"; // azul claro
+
+            // Agora sim calcular e mostrar quantas senhas possíveis existem
+            let totalSenhas = 0;
+            for (let d1 = 0; d1 <= 9; d1++) {
+                for (let d2 = 0; d2 <= 9; d2++) {
+                    for (let d3 = 0; d3 <= 9; d3++) {
+                        for (let d4 = 0; d4 <= 9; d4++) {
+                            const senhaArray = [d1, d2, d3, d4];
+                            const setDigitos = new Set(senhaArray);
+                            const somaAtual = d1 + d2 + d3 + d4;
+
+                            if (setDigitos.size === 4 && somaAtual === 10 && d4 === 0) {
+                                totalSenhas++;
+                            }
                         }
                     }
                 }
             }
+            quantidadeSenhas.textContent = `Existem ${totalSenhas} senhas possíveis.`;
+        } else {
+            resultado.textContent = "Senha inválida! Verifique as regras.";
+            resultado.style.color = "#ff4d4d"; // vermelho
+            quantidadeSenhas.textContent = ""; // Não mostra quantidade de senhas
         }
-
-        document.getElementById('resultado').textContent = `Existem ${quantidade} senhas possíveis.`;
     }
 </script>
 
