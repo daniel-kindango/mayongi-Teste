@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Soma de Termos Pares da Fibonacci</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(to right, #f58529, #fbbc05, #ff1c68);
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            background-color: rgba(0, 0, 0, 0.7);
+            border-radius: 12px;
+            padding: 40px;
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        h1 {
+            color: #fff;
+            margin-bottom: 20px;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        p {
+            color: #fff;
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+
+        input, button {
+            padding: 12px;
+            margin: 10px 0;
+            width: 100%;
+            border: none;
+            border-radius: 8px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+
+        input {
+            background-color: #333;
+            color: #fff;
+        }
+
+        button {
+            background-color: #3897f0;
+            color: #fff;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #0052cc;
+        }
+
+        #resultado {
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
+            color: #fff;
+        }
+
+        input::placeholder {
+            color: #ccc;
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Soma dos Termos Pares da Fibonacci</h1>
+
+    <p>Digite o valor de N:</p>
+
+    <input type="number" id="numero" placeholder="Ex: 1000000">
+    <br>
+    <button onclick="calcularSomaParesFibonacci()">Calcular Soma</button>
+
+    <div id="resultado"></div>
+</div>
+
+<script>
+    function calcularSomaParesFibonacci() {
+        let n = BigInt(document.getElementById('numero').value);
+
+        if (n < 0n) {
+            document.getElementById('resultado').innerText = "Digite um número positivo!";
+            return;
+        }
+
+        let soma = 0n;
+        let a = 0n; // F(0) = 0
+        let b = 2n; // Primeiro termo par F(3) = 2
+
+        while (b <= n) {
+            soma += b;
+            let next = 4n * b + a; // fórmula eficiente para termos pares
+            a = b;
+            b = next;
+        }
+
+        document.getElementById('resultado').innerText = "Soma dos termos pares: " + soma.toString();
+    }
+</script>
+
+</body>
+</html>

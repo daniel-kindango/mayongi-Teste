@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Quantas Senhas Possíveis?</title>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #1a1a1a;
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            background-color: #333;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 0 25px rgba(0, 0, 0, 0.4);
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+            transition: transform 0.3s ease;
+        }
+
+        .container:hover {
+            transform: scale(1.05);
+        }
+
+        h1 {
+            margin-bottom: 20px;
+            font-size: 30px;
+            font-weight: bold;
+            color: #fe2c55;
+            text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.7);
+        }
+
+        button {
+            padding: 15px 30px;
+            font-size: 16px;
+            background-color: #fe2c55;
+            color: white;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            width: 100%;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        button:hover {
+            background-color: #f7245c;
+            transform: scale(1.05);
+        }
+
+        #resultado {
+            margin-top: 20px;
+            font-size: 20px;
+            font-weight: bold;
+            color: #00c6ff;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+    <h1>Quantas Senhas Possíveis?</h1>
+    <p>A senha do cofre é um número de 4 dígitos. A dica é:</p>
+    <ul>
+        <li>Todos os dígitos são diferentes.</li>
+        <li>A soma deles é 10.</li>
+        <li>O número termina com zero (0).</li>
+    </ul>
+
+    <button onclick="calcularSenhas()">Calcular Senhas Possíveis</button>
+    <p id="resultado"></p>
+</div>
+
+<script>
+    function calcularSenhas() {
+        let quantidade = 0;
+
+        // O último dígito é 0, então só precisamos escolher os três primeiros dígitos
+        for (let d1 = 1; d1 <= 9; d1++) {
+            for (let d2 = 1; d2 <= 9; d2++) {
+                for (let d3 = 1; d3 <= 9; d3++) {
+                    // Todos os dígitos precisam ser diferentes entre si e de 0
+                    if (d1 !== d2 && d1 !== d3 && d2 !== d3) {
+                        // Soma dos três primeiros dígitos + 0 (último dígito)
+                        if (d1 + d2 + d3 === 10) {
+                            quantidade++;
+                        }
+                    }
+                }
+            }
+        }
+
+        document.getElementById('resultado').textContent = `Existem ${quantidade} senhas possíveis.`;
+    }
+</script>
+
+</body>
+</html>

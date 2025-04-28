@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Encontrar Próximo Número</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #e5ddd5;
+            color: #333;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        h1 {
+            color: #075E54;
+            margin-bottom: 20px;
+            font-size: 24px;
+            font-weight: 600;
+        }
+
+        p {
+            font-size: 14px;
+            color: #555;
+            margin-bottom: 20px;
+        }
+
+        input, button {
+            padding: 12px;
+            margin: 10px 0;
+            width: 100%;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            box-sizing: border-box;
+            font-size: 16px;
+            background-color: #f0f0f0;
+        }
+
+        button {
+            background-color: #25d366;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #128C7E;
+        }
+
+        #resultado {
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
+            color: #00796b;
+        }
+
+        input::placeholder {
+            color: #888;
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Descubra o Próximo Número da Sequência</h1>
+
+    <p>Digite os números separados por vírgula (ex: 2,6,12,20,30,42)</p>
+
+    <input type="text" id="sequencia" placeholder="Digite a sequência">
+    <br>
+    <button onclick="calcularProximo()">Calcular</button>
+
+    <div id="resultado"></div>
+</div>
+
+<script>
+    function calcularProximo() {
+        const input = document.getElementById('sequencia').value;
+        const numeros = input.split(',').map(num => parseInt(num.trim()));
+
+        if (numeros.includes(NaN)) {
+            document.getElementById('resultado').innerText = "Entrada inválida!";
+            return;
+        }
+
+        // Calcula as diferenças entre os números
+        let diferencas = [];
+        for (let i = 0; i < numeros.length - 1; i++) {
+            diferencas.push(numeros[i + 1] - numeros[i]);
+        }
+
+        // Agora calcula as diferenças das diferenças
+        let diferencas2 = [];
+        for (let i = 0; i < diferencas.length - 1; i++) {
+            diferencas2.push(diferencas[i + 1] - diferencas[i]);
+        }
+
+        // Se as segundas diferenças forem constantes, é uma sequência quadrática
+        const incremento = diferencas2[0];
+
+        // Calcula o próximo incremento da primeira diferença
+        const proximaDiferenca = diferencas[diferencas.length - 1] + incremento;
+
+        // O próximo número é o último + próxima diferença
+        const proximoNumero = numeros[numeros.length - 1] + proximaDiferenca;
+
+        document.getElementById('resultado').innerText = "O próximo número é: " + proximoNumero;
+    }
+</script>
+
+</body>
+</html>
